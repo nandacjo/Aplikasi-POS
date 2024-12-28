@@ -9,7 +9,7 @@
                 <img src="{{ asset('AdminLTE-2/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Kasir Kepala</p>
+                <p>{{ auth()->user()->name }}</p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -20,7 +20,8 @@
 
             <!-- Optionally, you can add icons to the links -->
 
-            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+            <li class="active"><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span></a></li>
 
             <li class="header">MASTER</li>
 
