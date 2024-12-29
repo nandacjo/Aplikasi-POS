@@ -19,10 +19,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/jvectormap/jquery-jvectormap.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('AdminLTE-2/dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('AdminLTE-2') }}/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
     {{--
+
     <link rel="stylesheet" href="{{ asset('AdminLTE-2/dist/css/skins/skin-blue.min.css') }}"> --}}
     <!-- AdminLTE Skins. Choose a skin from the css/skins
            folder instead of downloading all of them to reduce the load. -->
@@ -78,7 +81,7 @@ desired effect
                     @section('breadcrumb')
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                     @show
-                    
+
                 </ol>
             </section>
 
@@ -191,6 +194,9 @@ desired effect
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE-2/dist/js/adminlte.min.js') }}"></script>
 
+    <!-- DataTables -->
+    <script src="{{ asset('AdminLTE-2/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('AdminLTE-2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Sparkline -->
     <script src="{{ asset('AdminLTE-2/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
@@ -210,6 +216,8 @@ desired effect
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+
+    @stack('scripts')
 </body>
 
 </html>
