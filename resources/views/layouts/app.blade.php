@@ -8,6 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }} - Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -79,7 +80,7 @@ desired effect
                 </h1>
                 <ol class="breadcrumb">
                     @section('breadcrumb')
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                     @show
 
                 </ol>
@@ -211,6 +212,8 @@ desired effect
     <script src="{{ asset('AdminLTE-2/dist/js/pages/dashboard2.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('AdminLTE-2/dist/js/demo.js') }}"></script>
+    {{-- Validator --}}
+    <script src="{{ asset('assets/js/validator.min.js') }}"></script>
 
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
