@@ -1,8 +1,14 @@
 <?php
 
-function format_uang($angka)
+function format_uang($angka, $prefix = 'Rp ')
 {
-  return number_format($angka, 0, ',', '.');
+  return $prefix . number_format($angka, 0, ',', '.') . ',-';
+}
+
+function format_currency($angka, $currency = 'IDR', $locale = 'id_ID')
+{
+  $fmt = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+  return $fmt->formatCurrency($angka, $currency);
 }
 
 function terbilang($angka)
@@ -52,4 +58,9 @@ function tanggal_indonesia($tgl, $tampil_hari = true)
   }
 
   return $text;
+}
+
+function tambah_nol_didepan($value, $threshold = null)
+{
+  return sprintf("%0" . $threshold  . 's', $value);
 }
