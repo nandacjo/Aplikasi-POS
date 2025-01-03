@@ -1,0 +1,44 @@
+[33mcommit b81cb39930a7fee78e872444eeec4df1f0cca00c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m, [m[1;31mgithub/develop[m[33m)[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Sun Dec 29 16:28:06 2024 +0700
+
+    feat(category)Membuat CRUD Category:
+    1. Store category
+    2. Update category
+    3. Delete category
+    4. Implementasi Yajra datatable
+
+[33mcommit b3a843bd016855d32e038b5a8ab708207200146f[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Sun Dec 29 12:06:59 2024 +0700
+
+    feat(kategori):  membuat halaman kategori
+
+[33mcommit 4b9ab25ad5bf0193b256af9c4e20ed547fd39fd9[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Sat Dec 28 14:09:01 2024 +0700
+
+    Memperbaiki tampilan dan layout aplikasi
+
+[33mcommit 45b8cb24ed9c7c954c96424348d2783a207a30a0[m[33m ([m[1;32mmain[m[33m)[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Sat Dec 28 12:14:33 2024 +0700
+
+    Integrasi AdminLTE
+    1. Install Jetstream
+    2. Update halaman login
+
+[33mcommit 1c3504ef392f46e413200c9da6f13b4f1305c7e3[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Thu Dec 26 15:57:54 2024 +0700
+
+    Membuat helper
+    1. function terbilang
+    2. function tanggal_indonesia
+    3. function format uang
+
+[33mcommit af47673a2d68618d5f8891cd692a7998771e5f46[m[33m ([m[1;32mmaster[m[33m)[m
+Author: nandacjo <nandacoje22@gmail.com>
+Date:   Thu Dec 26 12:35:02 2024 +0700
+
+    Project Pos Laravel

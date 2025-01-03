@@ -22,24 +22,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        // Membuat Admin
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'current_team_id' => null,
-            'profile_photo_path' => null, // opsional, sesuaikan jika ada path foto
-        ]);
 
-        // Membuat User Biasa
-        User::create([
-            'name' => 'User',
-            'email' => 'user@gmail.com',
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'current_team_id' => null,
-            'profile_photo_path' => null, // opsional
+
+        $this->call([
+            UserSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }
