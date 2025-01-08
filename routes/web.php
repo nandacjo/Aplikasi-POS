@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,5 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/produk/data', [ProductController::class, 'data'])->name('produk.data');
     Route::post('/produk/delete-selected', [ProductController::class, 'deleteSelected'])->name('produk.delete.selected');
+    Route::post('/produk/cetak-barcode', [ProductController::class, 'cetakBarcode'])->name('produk.cetak.barcode');
+    // Route::resource('produk', ProductController::class);
     Route::resource('produk', ProductController::class);
 });

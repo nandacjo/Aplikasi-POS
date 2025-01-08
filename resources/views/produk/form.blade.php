@@ -25,7 +25,7 @@
                             <select name="id_category" id="id_category" class="form-control" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($category as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
+                                <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach
                             </select>
                             <span class="help-block with-errors"></span>

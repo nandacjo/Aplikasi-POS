@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class ProductController extends Controller
 {
@@ -94,4 +96,55 @@ class ProductController extends Controller
         }
         return response(null, 204);
     }
+
+    public function cetakBarcode(Request $request)
+    {
+        $dataProduk = [];
+        if ($request->product_id) {
+            foreach ($request->product_id as $idProduk) {
+                $produk = Product::find($idProduk);
+                $dataProduk[] = $produk;
+            }
+        } else {
+            $dataProduk = Product::all();
+        }
+
+
+        $generatorHTML = new BarcodeGeneratorHTML();
+
+        // Generate barcode untuk setiap produk
+        $barcodes = [];
+        foreach ($dataProduk as $produk) {
+            // Ambil kode produk atau atribut lain yang digunakan untuk barcode
+            $barcode = $generatorHTML->getBarcode($produk->product_code, $generatorHTML::TYPE_CODE_128);
+            $barcodes[] = $barcode;
+        }
+
+
+        $no = 1;
+
+        // Kirim dataProduk dan barcodes ke view
+        $pdf = Pdf::loadView('produk.barcode', compact('dataProduk', 'barcodes', 'no'));
+        $pdf->setPaper('a4', 'potrait');
+
+        return $pdf->stream('produk.pdf');
+    }
+
+
+    // public function cetakBarcode(Request $request)
+    // {
+    //     $dataProduk = [];
+    //     foreach ($request->product_id as $idProduk) {
+    //         $produk = Product::find($idProduk);
+    //         $dataProduk[] = $produk;
+    //     }
+
+    //     $generatorHTML = new BarcodeGeneratorHTML();
+    //     $barcode = $generatorHTML->getBarcode('0001245259636', $generatorHTML::TYPE_CODE_128);
+
+    //     $pdf = Pdf::loadView('produk.barcode', compact('dataProduk', 'barcode'));
+    //     $pdf->setPaper('a4', 'potrait');
+
+    //     return $pdf->stream('produk.pdf');
+    // }
 }

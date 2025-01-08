@@ -1,73 +1,77 @@
 <x-app-layout>
 
-    <x-slot name="title">Produk</x-slot>
+  <x-slot name="title">Produk</x-slot>
 
-    @section('breadcrumb')
+  @section('breadcrumb')
     @parent
     <li class="active">Produk</li>
-    @endsection
+  @endsection
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">
-                        <div class="btn-group">
-                            <button onclick="addForm('{{ route('produk.store') }}')"
-                                class="btn btn-success btn-xs btn-flat">
-                                <i class="fa fa-plus-circle"> Tambah</i>
-                            </button>
-                            <button onclick="deleteSelectedData('{{ route('produk.delete.selected') }}')"
-                                class="btn btn-danger btn-xs btn-flat">
-                                <i class="fa fa-trash"> Hapus</i>
-                        </div>
-                    </h3>
-                </div>
-                <div class="box-body">
-                    <form action="" class="form-produk">
-                        @csrf
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">
+            <div class="btn-group">
+              <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-success btn-xs btn-flat">
+                <i class="fa fa-plus-circle"> Tambah</i>
+              </button>
+              <button onclick="deleteSelectedData('{{ route('produk.delete.selected') }}')"
+                class="btn btn-danger btn-xs btn-flat">
+                <i class="fa fa-trash"> Hapus</i></button>
 
-                                    <th>
-                                        <input type="checkbox" name="select_all" id="select_all">
-                                    </th>
-                                    <th width="5%">No</th>
-                                    <th>Kode</th>
-                                    <th>Nama</th>
-                                    <th>Kategori</th>
-                                    <th>Merek</th>
-                                    <th>Harga Beli</th>
-                                    <th>Harga Jual</th>
-                                    <th>Diskon</th>
-                                    <th>Stok</th>
-                                    <th><i class="fa fa-cog"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
+              <button onclick="cetakBarcode('{{ route('produk.cetak.barcode') }}')"
+                class="btn btn-info btn-xs btn-flat">
+                <i class="fa fa-barcode"> Cetak Barcode</i></button>
             </div>
+          </h3>
         </div>
-    </div>
+        <div class="box-body">
+          <form action="" method="post" class="form-produk">
+            @csrf
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
 
-    @includeIf('produk.form')
-    @push('scripts')
+                  <th>
+                    <input type="checkbox" name="select_all" id="select_all">
+                  </th>
+                  <th width="5%">No</th>
+                  <th>Kode</th>
+                  <th>Nama</th>
+                  <th>Kategori</th>
+                  <th>Merek</th>
+                  <th>Harga Beli</th>
+                  <th>Harga Jual</th>
+                  <th>Diskon</th>
+                  <th>Stok</th>
+                  <th><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @includeIf('produk.form')
+  @push('scripts')
     <script>
-        let table;
+      let table;
 
       $(function() {
         initializeDataTable();
         setupModalFormSubmission();
+
       });
 
       // Select all
-        $('[name=select_all]').on('click', function() {
-            $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
-        });
+      $('[name=select_all]').on('click', function() {
+        $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+      });
 
       // Inisialisasi DataTable
       function initializeDataTable() {
@@ -157,6 +161,12 @@
 
       // Fungsi Edit Data
       function editForm(url) {
+
+        $('.form-produk').on('submit', function(e) {
+          // Mencegah aksi form berjalan (default action)
+          e.preventDefault();
+        });
+
         openModal('Edit Produk', 'put', url);
         $.get(url)
           .done((response) => {
@@ -205,26 +215,43 @@
       }
 
       // Fungsi Hapus Data yang Dipilih
-      function deleteSelectedData(url){
-        if($('input:checked').length > 1){
-          if(confirm('Yakin ingin menghapus data terpilih')){
+      function deleteSelectedData(url) {
+        if ($('input:checked').length > 1) {
+          if (confirm('Yakin ingin menghapus data terpilih')) {
             $.post(url, $('.form-produk').serialize())
-            .done((response) => {
-            table.ajax.reload();
-            })
-            .fail((errors) => {
-            alert('Tidak dapat menghapus data');
-            return
-            })
+              .done((response) => {
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                alert('Tidak dapat menghapus data');
+                return
+              })
           }
-        }else{
-            alert('Pilih data yang akan dihapus');
-            return
+        } else {
+          alert('Pilih data yang akan dihapus');
+          return
         }
       }
 
+      function cetakBarcode(url) {
+        if ($('input:checked').length < 1) {
+          $('.form-produk')
+            .attr('target', '_blank')
+            .attr('action', url)
+            .attr('_method', 'post')
+            .submit();
+        } else
+        if ($('input:checked').length == 1) {
+          $('.form-produk').attr('target', '_blank').attr('action', url).submit();
+        } else if ($('input:checked').length < 3) {
+          alert('Pilih minimal 3 data untuk dicetak');
+        } else {
+          $('.form-produk')
+            .attr('target', '_blank').attr('action', url).submit();
+        }
+      }
     </script>
-    @endpush
+  @endpush
 
 
 </x-app-layout>
