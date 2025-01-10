@@ -1,10 +1,10 @@
 <x-app-layout>
 
-  <x-slot name="title">Kategori</x-slot>
+  <x-slot name="title">Member</x-slot>
 
   @section('breadcrumb')
     @parent
-    <li class="active">Kategori</li>
+    <li class="active">Member</li>
   @endsection
 
   <div class="row">
@@ -12,29 +12,43 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">
-            <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat">
-              <i class="fa fa-plus-circle">Tambah</i>
-            </button>
+            <div class="btn-group">
+              <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat">
+                <i class="fa fa-plus-circle"> Tambah</i>
+              </button>
+              <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-info btn-xs btn-flat">
+                <i class="fa fa-id-card"> Cetak Kartu</i>
+              </button>
+            </div>
           </h3>
         </div>
         <div class="box-body">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th width="5%">No</th>
-                <th>Kategori</th>
-                <th><i class="fa fa-cog"></i></th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
+          <form action="" method="POST" class="form-member">
+            @csrf
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox" name="select_all" id="select_all">
+                  </th>
+                  <th width="5%">No</th>
+                  <th>Kode</th>
+                  <th>Nama</th>
+                  <th>Phone</th>
+                  <th>Alamat</th>
+                  <th><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </form>
         </div>
       </div>
     </div>
   </div>
 
-  @includeIf('kategori.form')
+  @includeIf('member.form')
 
   @push('scripts')
     <script>
@@ -44,15 +58,30 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('kategori.data') }}'
+            url: '{{ route('member.data') }}'
           },
           columns: [{
+              data: "select_all",
+              searchable: false,
+              sortable: false
+            },
+
+            {
               data: 'DT_RowIndex',
               searchable: false,
               sortable: false
             },
             {
-              data: 'category_name'
+              data: 'member_code'
+            },
+            {
+              data: "name"
+            },
+            {
+              data: "phone"
+            },
+            {
+              data: "address"
             },
             {
               data: 'aksi',
@@ -61,6 +90,12 @@
             }
           ]
         })
+
+
+        // Select all
+        $('[name=select_all]').on('click', function() {
+          $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+        });
       });
 
       $('#modal-form').validator().on('submit', function(e) {
@@ -75,6 +110,8 @@
               table.ajax.reload();
             })
             .fail((errors) => {
+              console.log(errors);
+
               alert("Tidak dapat menyimpan data");
               return
             })
@@ -83,26 +120,31 @@
 
       function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Kategori')
+        $('#modal-form .modal-title').text('Tambah Member')
 
         $('#modal-form form')[0].reset();
         $("#modal-form form").attr('action', url);
         $('#modal-form [name=_method]').val('post');
-        $('#modal-form [name=category_name]').focus();
+        $('#modal-form [name=name]').focus();
       }
 
       function editForm(url) {
+        $('.form-member').on('submit', function(e) {
+          e.preventDefault();
+        });
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Edit Kategori')
+        $('#modal-form .modal-title').text('Edit Member')
 
         $('#modal-form form')[0].reset();
         $("#modal-form form").attr('action', url);
         $('#modal-form [name=_method]').val('put');
-        $('#modal-form [name=category_name]').focus();
+        $('#modal-form [name=name]').focus();
 
         $.get(url)
           .done((response) => {
-            $('#modal-form [name=category_name]').val(response.category_name)
+            $('#modal-form [name=name]').val(response.name)
+            $('#modal-form [name=phone]').val(response.phone)
+            $('#modal-form [name=address]').val(response.address)
           })
           .fail((errors) => {
             alert('Tidak dapat menampilkan data');
@@ -111,7 +153,10 @@
       }
 
       function deleteData(url) {
-        if (confirm('Anda yakin akan menghapus data ini?')) {
+        $('.form-produk').on('submit', function(e) {
+          e.preventDefault();
+        });
+        if (confirm('Apakah anda yakin hapus data member ini?')) {
           $.post(url, {
               '_token': $('[name=csrf-token]').attr('content'),
               '_method': 'delete'

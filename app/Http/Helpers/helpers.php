@@ -64,3 +64,35 @@ function tambah_nol_didepan($value, $threshold = null)
 {
   return sprintf("%0" . $threshold  . 's', $value);
 }
+
+
+// Fungsi untuk membuat kode anggota unik dengan prefix berdasarkan huruf pertama dari nama
+function generateMemberCode($name, $length = 6)
+{
+  // Ambil huruf pertama dari nama untuk menjadi prefix
+  $prefix = strtoupper(substr($name, 0, 1)); // Mengambil huruf pertama dan mengubahnya menjadi huruf kapital
+
+  // Menghasilkan kode acak yang terdiri dari angka dan huruf
+  $characters = '0123456789';
+  $code = $prefix; // Awali dengan huruf pertama dari nama
+
+  // Membuat bagian acak setelah prefix
+  for ($i = 0; $i < $length - 1; $i++) { // -1 karena sudah ada 1 karakter prefix
+    $code .= $characters[rand(0, strlen($characters) - 1)];
+  }
+
+  return $code;
+}
+
+
+// Fungsi untuk membuat kode anggota unik
+// function generateMemberCode($prefix = 'M', $length = 6, $name)
+// {
+//   // Menghasilkan kode acak yang terdiri dari angka dan huruf
+//   $characters = '0123456789';
+//   $code = $prefix;
+//   for ($i = 0; $i < $length; $i++) {
+//     $code .= $characters[rand(0, strlen($characters) - 1)];
+//   }
+//   return $code;
+// }

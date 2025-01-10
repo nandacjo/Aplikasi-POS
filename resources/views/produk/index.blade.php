@@ -168,6 +168,8 @@
         });
 
         openModal('Edit Produk', 'put', url);
+
+
         $.get(url)
           .done((response) => {
             populateForm(response);
@@ -179,16 +181,24 @@
 
       // Fungsi Hapus Data
       function deleteData(url) {
-        $.post(url, {
-            '_token': $('[name=csrf-token]').attr('content'),
-            '_method': 'delete',
-          })
-          .done(() => {
-            table.ajax.reload();
-          })
-          .fail(() => {
-            alert('Tidak dapat menghapus data');
-          });
+
+        $('.form-produk').on('submit', function(e) {
+          e.preventDefault();
+        });
+
+        if (confirm('Apakah anda yakin hapus data produk ini?')) {
+          $.post(url, {
+              '_token': $('[name=csrf-token]').attr('content'),
+              '_method': 'delete',
+            })
+            .done(() => {
+              table.ajax.reload();
+            })
+            .fail(() => {
+              alert('Tidak dapat menghapus data');
+            });
+        }
+
       }
 
       // Fungsi Membuka Modal

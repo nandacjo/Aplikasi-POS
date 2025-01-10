@@ -63,6 +63,9 @@ class ProductController extends Controller
         $nextId = $lastProduct ? $lastProduct->id + 1 : 1;
         $request["product_code"] = "P" . str_pad($nextId, 6, '0', STR_PAD_LEFT);
         // $request['prodcut_code'] = "P" . tambah_nol_didepan(int($product) + 1, 6);
+        $request['purchase_price'] = str_replace('.', '', $request->purchase_price);
+        $request['selling_price'] = str_replace('.', '', $request->selling_price);
+
         $product = Product::create($request->all());
         return response()->json('Data berhasil disimpan', 200);
     }
