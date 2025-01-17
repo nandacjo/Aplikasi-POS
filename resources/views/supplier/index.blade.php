@@ -1,10 +1,10 @@
 <x-app-layout>
 
-  <x-slot name="title">Member</x-slot>
+  <x-slot name="title">Supplier</x-slot>
 
   @section('breadcrumb')
     @parent
-    <li class="active">Member</li>
+    <li class="active">Supplier</li>
   @endsection
 
   <div class="row">
@@ -13,17 +13,20 @@
         <div class="box-header with-border">
           <h3 class="box-title">
             <div class="btn-group">
-              <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat">
+              <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat">
                 <i class="fa fa-plus-circle"> Tambah</i>
               </button>
-              <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-info btn-xs btn-flat">
+              <button onclick="deleteSelectedData('{{ route('supplier.delete.selected') }}')"
+                class="btn btn-danger btn-xs btn-flat">
+                <i class="fa fa-trash"> Hapus</i></button>
+              <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-info btn-xs btn-flat">
                 <i class="fa fa-id-card"> Cetak Kartu</i>
               </button>
             </div>
           </h3>
         </div>
         <div class="box-body">
-          <form action="" method="POST" class="form-member">
+          <form action="" method="POST" class="form-supplier">
             @csrf
             <table class="table table-bordered table-hover">
               <thead>
@@ -48,7 +51,7 @@
     </div>
   </div>
 
-  @includeIf('member.form')
+  @includeIf('supplier.form')
 
   @push('scripts')
     <script>
@@ -58,7 +61,7 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('member.data') }}'
+            url: '{{ route('supplier.data') }}'
           },
           columns: [{
               data: "select_all",
@@ -70,9 +73,6 @@
               data: 'DT_RowIndex',
               searchable: false,
               sortable: false
-            },
-            {
-              data: 'member_code'
             },
             {
               data: "name"
@@ -90,13 +90,16 @@
             }
           ]
         })
-
-
-        // Select all
+        
         $('[name=select_all]').on('click', function() {
           $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
         });
+
+
       });
+
+      // Select all
+
 
       $('#modal-form').validator().on('submit', function(e) {
         if (!e.preventDefault()) {
@@ -120,7 +123,7 @@
 
       function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Member')
+        $('#modal-form .modal-title').text('Tambah Supplier')
 
         $('#modal-form form')[0].reset();
         $("#modal-form form").attr('action', url);
@@ -129,7 +132,7 @@
       }
 
       function editForm(url) {
-        $('.form-member').on('submit', function(e) {
+        $('.form-supplier').on('submit', function(e) {
           e.preventDefault();
         });
         $('#modal-form').modal('show');
@@ -153,7 +156,7 @@
       }
 
       function deleteData(url) {
-        $('.form-member').on('submit', function(e) {
+        $('.form-supplier').on('submit', function(e) {
           e.preventDefault();
         });
         if (confirm('Apakah anda yakin hapus data member ini?')) {
@@ -170,6 +173,26 @@
             })
         }
 
+      }
+
+      function deleteSelectedData(url) {
+        if ($('input:checked').length > 1) {
+          if (confirm('Yakin ingin menghapus data terpilih')) {
+            $.post(url, $('.form-supplier').serialize())
+              .done((response) => {
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                console.log(errors);
+
+                alert('Tidak dapat menghapus data');
+                return
+              })
+          }
+        } else {
+          alert('Pilih data yang akan dihapus');
+          return
+        }
       }
     </script>
   @endpush
