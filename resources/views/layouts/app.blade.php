@@ -64,7 +64,7 @@ desired effect
 |---------------------------------------------------------|
 -->
 
-<body class="hold-transition skin-red-light sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
 
     @includeIf('components.header')

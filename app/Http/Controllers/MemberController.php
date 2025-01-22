@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member as Model;
+use App\Models\Member;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class MemberController extends Controller
 {
@@ -81,5 +84,22 @@ class MemberController extends Controller
         $model = model::find($id);
         $model->delete();
         return response(null, 204);
+    }
+
+    public function cetakCardMember(Request $request)
+    {
+        $dataMember = collect(array());
+
+        foreach ($request->member_id as $id) {
+            $member = Member::find($id);
+            $dataMember[] = $member;
+        }
+
+        $dataMember = $dataMember->chunk(2);
+        $no = 1;
+        $pdf = Pdf::loadView('member.cetak', compact('dataMember', 'no'));
+        $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
+
+        return $pdf->stream('card-member.pdf');
     }
 }

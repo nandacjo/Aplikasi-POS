@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Supplier as Model;
+use App\Models\Expense as Model;
 
-class SupplierController extends Controller
+class PengeluaranController extends Controller
 {
+    private $routeUpdate = 'pengeluaran.update';
+    private $routeDestroy = 'pengeluaran.destroy';
+    private $prefix = 'pengeluaran';
+
     public function index()
     {
-        return view('supplier.index');
+        return view($this->prefix . '.index');
     }
 
     public function data()
@@ -18,26 +22,27 @@ class SupplierController extends Controller
         return datatables()
             ->of($model)
             ->addIndexColumn()
+            ->addColumn('amount', function ($model) {
+                return format_uang($model->amount);
+            })
             ->addColumn('aksi', function ($model) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`' . route('supplier.update', $model->id) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button onclick="deleteData(`' . route('supplier.destroy', $model->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button onclick="editForm(`' . route($this->routeUpdate, $model->id) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`' . route($this->routeDestroy, $model->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'supplier_code', 'select_all'])
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
     public function store(Request $request)
     {
-
         // Simpan anggota baru
         $model = new Model();
-        $model->name = $request->name;
-        $model->phone = $request->phone;
-        $model->address = $request->address;
+        $model->description = $request->description;
+        $model->amount = $request->amount;
         $model->save();
 
         return response()->json('Data berhasil disimpan', 200);
@@ -53,9 +58,8 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         $model = Model::find($id);
-        $model->name = $request->name;
-        $model->phone = $request->phone;
-        $model->address = $request->address;
+        $model->description = $request->description;
+        $model->amount = $request->amount;
         $model->update();
 
         return response()->json('Data berhasil disimpan', 200);
@@ -63,18 +67,8 @@ class SupplierController extends Controller
 
     public function destroy($id)
     {
-        $model = model::find($id);
+        $model = Model::find($id);
         $model->delete();
-        return response(null, 204);
-    }
-
-    public function deleteSelected(Request $request)
-    {
-        print_r($request->supplier_id);
-        foreach ($request->supplier_id as $id) {
-            $product = Model::find($id);
-            $product->delete();
-        }
         return response(null, 204);
     }
 }

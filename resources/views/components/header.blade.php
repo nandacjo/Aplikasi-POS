@@ -4,7 +4,14 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>UN</b>K</span>
+         @php
+            $words = explode(' ', 'Tokona Unyak');
+            $word  = '';
+            foreach ($words as $w) {
+                $word .= $w[0];
+            }
+        @endphp
+        <span class="logo-mini"><b>{{$word[0]}}</b>{{ $word[1] }}</span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">{{ config('app.name') }}</span>
     </a>

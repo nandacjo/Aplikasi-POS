@@ -1,6 +1,6 @@
 <?php
 
-function format_uang($angka, $prefix = 'Rp ')
+function format_uang($angka, $prefix = 'Rp. ')
 {
   return $prefix . number_format($angka, 0, ',', '.') . ',-';
 }

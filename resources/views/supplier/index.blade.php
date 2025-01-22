@@ -16,12 +16,6 @@
               <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat">
                 <i class="fa fa-plus-circle"> Tambah</i>
               </button>
-              <button onclick="deleteSelectedData('{{ route('supplier.delete.selected') }}')"
-                class="btn btn-danger btn-xs btn-flat">
-                <i class="fa fa-trash"> Hapus</i></button>
-              <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-info btn-xs btn-flat">
-                <i class="fa fa-id-card"> Cetak Kartu</i>
-              </button>
             </div>
           </h3>
         </div>
@@ -31,11 +25,7 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>
-                    <input type="checkbox" name="select_all" id="select_all">
-                  </th>
                   <th width="5%">No</th>
-                  <th>Kode</th>
                   <th>Nama</th>
                   <th>Phone</th>
                   <th>Alamat</th>
@@ -63,11 +53,7 @@
           ajax: {
             url: '{{ route('supplier.data') }}'
           },
-          columns: [{
-              data: "select_all",
-              searchable: false,
-              sortable: false
-            },
+          columns: [
 
             {
               data: 'DT_RowIndex',
@@ -91,9 +77,6 @@
           ]
         })
         
-        $('[name=select_all]').on('click', function() {
-          $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
-        });
 
 
       });
@@ -132,9 +115,6 @@
       }
 
       function editForm(url) {
-        $('.form-supplier').on('submit', function(e) {
-          e.preventDefault();
-        });
         $('#modal-form').modal('show');
         $('#modal-form .modal-title').text('Edit Member')
 
@@ -175,25 +155,6 @@
 
       }
 
-      function deleteSelectedData(url) {
-        if ($('input:checked').length > 1) {
-          if (confirm('Yakin ingin menghapus data terpilih')) {
-            $.post(url, $('.form-supplier').serialize())
-              .done((response) => {
-                table.ajax.reload();
-              })
-              .fail((errors) => {
-                console.log(errors);
-
-                alert('Tidak dapat menghapus data');
-                return
-              })
-          }
-        } else {
-          alert('Pilih data yang akan dihapus');
-          return
-        }
-      }
     </script>
   @endpush
 

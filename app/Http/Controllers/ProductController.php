@@ -48,8 +48,8 @@ class ProductController extends Controller
             ->addColumn('aksi', function ($product) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`' . route('produk.update', $product->id) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button onclick="deleteData(`' . route('produk.destroy', $product->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button type="button" onclick="editForm(`' . route('produk.update', $product->id) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`' . route('produk.destroy', $product->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
@@ -112,7 +112,6 @@ class ProductController extends Controller
             $dataProduk = Product::all();
         }
 
-
         $generatorHTML = new BarcodeGeneratorHTML();
 
         // Generate barcode untuk setiap produk
@@ -122,7 +121,6 @@ class ProductController extends Controller
             $barcode = $generatorHTML->getBarcode($produk->product_code, $generatorHTML::TYPE_CODE_128);
             $barcodes[] = $barcode;
         }
-
 
         $no = 1;
 

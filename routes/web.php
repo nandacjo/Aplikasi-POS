@@ -4,8 +4,12 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PembelianDetailController;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -34,8 +38,22 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
     Route::resource('/member', MemberController::class);
+    Route::post('/member/cetak-member', [MemberController::class, 'cetakCardMember'])->name('member.cetak.card');
+
 
     Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
     Route::post('/supplier/delete-selected', [SupplierController::class, 'deleteSelected'])->name('supplier.delete.selected');
     Route::resource('/supplier', SupplierController::class);
+
+    Route::get('/pengeluaran/data', [PengeluaranController::class, 'data'])->name('pengeluaran.data');
+    Route::resource('/pengeluaran', PengeluaranController::class);
+
+    Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+    Route::resource('pembelian', PembelianController::class)->except('create');
+    Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
+
+    Route::get('/pembelian_detail/{id}/data', [PembelianDetailController::class, 'data'])->name('pembelian_detail.data');
+    Route::get('/pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
+    Route::resource('pembelian_detail', PembelianDetailController::class)
+        ->except('create', 'show', 'edit');
 });

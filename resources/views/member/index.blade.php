@@ -16,7 +16,8 @@
               <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat">
                 <i class="fa fa-plus-circle"> Tambah</i>
               </button>
-              <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-info btn-xs btn-flat">
+              <button onclick="cetakCardMember('{{ route('member.cetak.card') }}')"
+                class="btn btn-info btn-xs btn-flat">
                 <i class="fa fa-id-card"> Cetak Kartu</i>
               </button>
             </div>
@@ -170,6 +171,26 @@
             })
         }
 
+      }
+
+      function cetakCardMember(url) {
+        console.log('hello')
+        if ($('input:checked').length < 1) {
+          $('.form-member')
+            .attr('target', '_blank')
+            .attr('action', url)
+            .attr('_method', 'post')
+            .submit();
+        } else {
+          if ($('input:checked').length == 1) {
+            $('.form-member').attr('target', '_blank').attr('action', url).submit();
+          } else if ($('input:checked').length < 3) {
+            alert('Pilih minimal 3 data untuk dicetak');
+          } else {
+            $('.form-member')
+              .attr('target', '_blank').attr('action', url).submit();
+          }
+        }
       }
     </script>
   @endpush

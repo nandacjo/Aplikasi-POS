@@ -161,15 +161,7 @@
 
       // Fungsi Edit Data
       function editForm(url) {
-
-        $('.form-produk').on('submit', function(e) {
-          // Mencegah aksi form berjalan (default action)
-          e.preventDefault();
-        });
-
         openModal('Edit Produk', 'put', url);
-
-
         $.get(url)
           .done((response) => {
             populateForm(response);
@@ -181,11 +173,6 @@
 
       // Fungsi Hapus Data
       function deleteData(url) {
-
-        $('.form-produk').on('submit', function(e) {
-          e.preventDefault();
-        });
-
         if (confirm('Apakah anda yakin hapus data produk ini?')) {
           $.post(url, {
               '_token': $('[name=csrf-token]').attr('content'),
@@ -243,23 +230,21 @@
         }
       }
 
-      function cetakBarcode(url) {
+    
+    function cetakBarcode(url) {
         if ($('input:checked').length < 1) {
-          $('.form-produk')
-            .attr('target', '_blank')
-            .attr('action', url)
-            .attr('_method', 'post')
-            .submit();
-        } else
-        if ($('input:checked').length == 1) {
-          $('.form-produk').attr('target', '_blank').attr('action', url).submit();
+            alert('Pilih data yang akan dicetak');
+            return;
         } else if ($('input:checked').length < 3) {
-          alert('Pilih minimal 3 data untuk dicetak');
+            alert('Pilih minimal 3 data untuk dicetak');
+            return;
         } else {
-          $('.form-produk')
-            .attr('target', '_blank').attr('action', url).submit();
+            $('.form-produk')
+                .attr('target', '_blank')
+                .attr('action', url)
+                .submit();
         }
-      }
+    }
     </script>
   @endpush
 

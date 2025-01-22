@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
+            MemberSeeder::class,
+            SupplierSeeder::class,
+            PengeluaranSeeder::class
         ]);
     }
 }
